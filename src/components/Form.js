@@ -45,18 +45,50 @@ export default function Form() {
           }
       }}]
 
+
+    let submitHandler = (e) => {
+        e.preventDefault()
+        // console.log(e.target)
+        
+        let inputData = {};
+
+
+        // console.log(e.target.elements.parental_consent.type)
+        for (let i = 0; i < e.target.elements.length; i++){
+            // console.log('e.target.elements[', i, ']: ', e.target.elements[i].value)
+            
+            if (e.target.elements[i].type === 'checkbox'){
+                inputData[e.target.elements[i].name] = e.target.elements[i].checked;
+            }else{
+                inputData[e.target.elements[i].name] = e.target.elements[i].value;
+            }
+        }
+        // console.log('parental: ', e.target.elements.parental_consent.checked)
+        console.log(inputData)
+    }  
+
     let buildForm = () => {
         console.log('in buildform')
         
-        let formHTML = [];
+        let formHTMLOuter = [];
+        let formHTMLInner = [];
+
         
         
         for (let i = 0; i < formData.length; i++){
-            formHTML.push(<label>{formData[i].human_label}</label>)
-            formHTML.push(<div></div>)
+            formHTMLInner.push(<label key={formData[i].name}>{formData[i].human_label}</label>)
+            formHTMLInner.push(<input 
+                key = {'input' + i}
+                type = {formData[i].type}
+                name = {formData[i].name}
+            />)
+            formHTMLInner.push(<div key={'div' + i}></div>)
         }
 
-        return formHTML;
+        formHTMLInner.push(<button key='button' type='submit'>Submit</button>)
+
+        formHTMLOuter.push(<form onSubmit={submitHandler} key='form'>{formHTMLInner}</form>)
+        return formHTMLOuter;
     }
 
 
@@ -64,7 +96,9 @@ export default function Form() {
         <div>
             in form 
             <div>
+                
                 {buildForm()} 
+                
             </div>
         </div>
     )
