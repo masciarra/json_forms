@@ -45,44 +45,66 @@ export default function Form() {
           }
       }}]
 
+    /*
+    handler function for form submit.  Aggregates user input into JSON object, prints to console
 
+    */
+    
     let submitHandler = (e) => {
         e.preventDefault()
-        // console.log(e.target)
-        
+
         let inputData = {};
 
-
-        // console.log(e.target.elements.parental_consent.type)
         for (let i = 0; i < e.target.elements.length; i++){
-            // console.log('e.target.elements[', i, ']: ', e.target.elements[i].value)
-            
             if (e.target.elements[i].type === 'checkbox'){
                 inputData[e.target.elements[i].name] = e.target.elements[i].checked;
             }else{
                 inputData[e.target.elements[i].name] = e.target.elements[i].value;
             }
         }
-        // console.log('parental: ', e.target.elements.parental_consent.checked)
+
         console.log(inputData)
     }  
 
+
+    /*
+    Validates form element 'show_if' property
+    */
+
+    let validateFormElementRender = (i) => {
+        if (formData[i].hasOwnProperty('show_if')){
+            if (formData[i].show_if){
+                return true;
+            }            
+        }else{
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /*
+    buildForm function iterates through formData json object and builds corresponding
+    form HTML.  Only renders form element if 'show_if' property is true or doesn't exist.
+    */
     let buildForm = () => {
-        console.log('in buildform')
         
         let formHTMLOuter = [];
         let formHTMLInner = [];
 
-        
-        
         for (let i = 0; i < formData.length; i++){
-            formHTMLInner.push(<label key={formData[i].name}>{formData[i].human_label}</label>)
-            formHTMLInner.push(<input 
-                key = {'input' + i}
-                type = {formData[i].type}
-                name = {formData[i].name}
-            />)
-            formHTMLInner.push(<div key={'div' + i}></div>)
+
+            if (validateFormElementRender(i)){
+                formHTMLInner.push(<label key={formData[i].name}>{formData[i].human_label}</label>)
+                formHTMLInner.push(<input 
+                    key = {'input' + i}
+                    type = {formData[i].type}
+                    name = {formData[i].name}
+                />)
+                formHTMLInner.push(<div key={'div' + i}></div>)                
+            }
+
         }
 
         formHTMLInner.push(<button key='button' type='submit'>Submit</button>)
@@ -92,9 +114,13 @@ export default function Form() {
     }
 
 
+    /*
+    buildForm called by jsx in html return
+    */
+
     return (
         <div>
-            in form 
+            <h1>Welcome to my form:</h1>
             <div>
                 
                 {buildForm()} 
