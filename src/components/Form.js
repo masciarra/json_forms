@@ -46,12 +46,12 @@ export default function Form() {
       }}]
 
     /*
-    handler function for form submit.  Aggregates user input into JSON object, prints to console
+    Handler function for form submit.  Aggregates user input into JSON object, prints to console.
 
     */
     
     let submitHandler = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         let inputData = {};
 
@@ -63,7 +63,7 @@ export default function Form() {
             }
         }
 
-        console.log(inputData)
+        console.log(inputData);
     }  
 
 
@@ -96,20 +96,20 @@ export default function Form() {
         for (let i = 0; i < formData.length; i++){
 
             if (validateFormElementRender(i)){
-                formHTMLInner.push(<label key={formData[i].name}>{formData[i].human_label}</label>)
+                formHTMLInner.push(<label key={formData[i].name}>{formData[i].human_label}</label>);
                 formHTMLInner.push(<input 
                     key = {'input' + i}
                     type = {formData[i].type}
                     name = {formData[i].name}
-                />)
-                formHTMLInner.push(<div key={'div' + i}></div>)                
+                />);
+                formHTMLInner.push(<div key={'div' + i}></div>);                
             }
 
         }
 
-        formHTMLInner.push(<button key='button' type='submit'>Submit</button>)
+        formHTMLInner.push(<button key='button' type='submit'>Submit</button>);
 
-        formHTMLOuter.push(<form onSubmit={submitHandler} key='form'>{formHTMLInner}</form>)
+        formHTMLOuter.push(<form onSubmit={submitHandler} key='form'>{formHTMLInner}</form>);
         return formHTMLOuter;
     }
 
